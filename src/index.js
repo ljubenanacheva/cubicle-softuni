@@ -1,16 +1,20 @@
 const express=require('express');
-const config=require('./config.js');
-const handlebars=require('express-handlebars');
+
+const config=require('./config/config');
+const setupViewEngine=require('./config/viewEngine.js');
+const cubeController=require('./controllers/cubeController.js');
 
 const app=express();
-app.engine('hbs', handlebars.engine({
-    extname: 'hbs',
-}));
-app.set('view engine','hbs');
-app.set('views','./src/views');
+setupViewEngine(app);
+app.use(express.static('src/public'));
 
 app.get('/',(req,res)=>{
-    res.render('home');
+    res.render('index');
 });
+
+app.get('/about',(req,res)=>{
+    res.render('about');
+});
+app.get('create',cubeController.getCreateCube);
 
 app.listen(config.PORT,()=>console.log(`Server is running on port ${config.PORT}...`));
