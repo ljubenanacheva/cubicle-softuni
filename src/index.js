@@ -3,6 +3,7 @@ const express=require('express');
 const routes=require('./routes.js');
 const config=require('./config/config');
 const setupViewEngine=require('./config/viewEngine.js');
+const initDatabase=require('./config/databaseinit .js');
 
 
 const app=express();
@@ -12,4 +13,6 @@ app.use(express.static('src/public'));
 app.use(express.urlencoded({extended: false}));
 app.use(routes);
 
-app.listen(config.PORT,()=>console.log(`Server is running on port ${config.PORT}...`));
+initDatabase()
+.then(()=>app.listen(config.PORT,()=>console.log(`Server is running on port ${config.PORT}...`)))
+.catch((err)=>console.error(err));
