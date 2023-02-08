@@ -2,6 +2,7 @@
 const Cube=require('../models/Cube.js');
 const Accessory=require('../models/Accessory.js');
 
+
 exports.getCreateCube=(req,res)=>{
     res.render('create');
 };

@@ -13,7 +13,7 @@ router.post('/login',async (req,res)=>{
        res.redirect('/');
         
     }catch(err){
-        console.log(err);
+        console.log(err.message);
         return res.redirect('/');
     }
 });
