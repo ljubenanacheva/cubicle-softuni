@@ -6,7 +6,7 @@ const cubeUtils=require('../utils/cubeUtils.js');
 
 
 exports.getCreateCube=(req,res)=>{
-    res.render('create');
+    res.render('cube/create');
 };
 
 exports.postCreateCube=async (req,res)=>{
@@ -55,4 +55,9 @@ exports.getDeleteCube=async(req,res)=>{
     const cube=await cubeService.getOne(req.params.cubeId).lean();
     const difficultyLevels=cubeUtils.generateDifficultyLevels(cube.difficultyLevel);
     res.render('cube/delete',{cube,difficultyLevels});
+}
+
+exports.postDeleteCube=async(req,res)=>{
+    await cubeService.delete(req.params.cubeId);
+    res.redirect('/');
 }
