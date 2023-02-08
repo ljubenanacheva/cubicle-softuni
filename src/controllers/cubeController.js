@@ -11,18 +11,28 @@ exports.getCreateCube=(req,res)=>{
 
 exports.postCreateCube=async (req,res)=>{
     const {name, description, imageUrl, difficultyLevel}=req.body;
-    let cube=new Cube({name, description, imageUrl, difficultyLevel});
+    let cube=new Cube({
+        name,
+        description,
+        imageUrl,
+        difficultyLevel,
+        owner: req.user._id
+    });
+
     await cube.save(cube);
     res.redirect('/');
 };
 
 exports.getDetails=async(req,res)=>{
-    const cube= await Cube.findById(req.params.cubeId).populate('accessories').lean();
+    const cube= await Cube.findById(req.params.cubeId)
+    .populate('accessories')
+    .lean();
 
     if(!cube){
         return res.redirect('/404');
     }
-    res.render('cube/details',{cube})
+    const isOwner=cube.owner==req.user._id;
+    res.render('cube/details',{cube,isOwner});
 }
 
 exports.getAttachAccessory=async(req,res)=>{
